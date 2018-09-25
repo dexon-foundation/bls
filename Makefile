@@ -30,12 +30,26 @@ all: $(BLS256_LIB) $(BLS256_SLIB) $(BLS384_LIB) $(BLS384_SLIB)
 MCL_LIB=../mcl/lib/libmcl.a
 
 $(MCL_LIB):
-	$(MAKE) -C ../mcl
+	$(MAKE) -C ../mcl lib/libmcl.a
+
+GMP_PREFIX=$(shell brew --prefix gmp)
+GMP_STATIC_LIB=$(GMP_PREFIX)/lib/libgmp.a
+GMPXX_STATIC_LIB=$(GMP_PREFIX)/lib/libgmpxx.a
+
+OPENSSL_PREFIX=$(shell brew --prefix openssl)
+OPENSSL_STATIC_LIB="$(OPENSSL_PREFIX)/lib/libcrypto.a"
 
 $(BLS256_LIB): $(OBJ_DIR)/bls_c256.o
 	$(AR) $@ $<
-$(BLS384_LIB): $(OBJ_DIR)/bls_c384.o
-	$(AR) $@ $<
+$(BLS384_LIB): $(OBJ_DIR)/bls_c384.o $(MCL_LIB)
+	rm -rf  tmp
+	mkdir -p tmp
+	cd tmp && \
+		ar x ../$(MCL_LIB) && \
+		ar x $(OPENSSL_STATIC_LIB) && \
+		ar x $(GMP_STATIC_LIB) && \
+		ar x $(GMPXX_STATIC_LIB)
+	$(AR) $@ $< tmp/*.o
 
 ifneq ($(findstring $(OS),mac/mingw64),)
   BLS256_SLIB_LDFLAGS+=-lgmpxx -lgmp -lcrypto -lstdc++
@@ -85,8 +99,8 @@ ifeq ($(OS),mac)
   MAC_GO_LDFLAGS="-ldflags=-s"
 endif
 # PATH is for mingw, LD_RUN_PATH is for linux, DYLD_LIBRARY_PATH is for mac
-test_go: ffi/go/bls/bls.go ffi/go/bls/bls_test.go $(BLS384_SLIB)
-	cd ffi/go/bls && env PATH=$$PATH:../../../lib LD_RUN_PATH="../../../lib" DYLD_LIBRARY_PATH="../../../lib" go test $(MAC_GO_LDFLAGS) .
+test_go: ffi/go/bls/bls.go ffi/go/bls/bls_test.go $(BLS384_LIB)
+	cd ffi/go/bls && go test $(MAC_GO_LDFLAGS) .
 
 EMCC_OPT=-I./include -I./src -I../mcl/include -I./ -Wall -Wextra
 EMCC_OPT+=-O3 -DNDEBUG
