@@ -33,17 +33,17 @@ $(MCL_LIB):
 	$(MAKE) -C ../mcl lib/libmcl.a
 
 ifeq ($(OS),mac)
-GMP_PREFIX=$(shell brew --prefix gmp)
-OPENSSL_PREFIX=$(shell brew --prefix openssl)
+GMP_PREFIX=$(shell brew --prefix gmp)/lib
+OPENSSL_PREFIX=$(shell brew --prefix openssl)/lib
 else
 GMP_PREFIX=/usr/lib/x86_64-linux-gnu
 OPENSSL_PREFIX=/usr/lib/x86_64-linux-gnu
 endif
 
-GMP_STATIC_LIB=$(GMP_PREFIX)/lib/libgmp.a
-GMPXX_STATIC_LIB=$(GMP_PREFIX)/lib/libgmpxx.a
+GMP_STATIC_LIB=$(GMP_PREFIX)/libgmp.a
+GMPXX_STATIC_LIB=$(GMP_PREFIX)/libgmpxx.a
 
-OPENSSL_STATIC_LIB=$(OPENSSL_PREFIX)/lib/libcrypto.a
+OPENSSL_STATIC_LIB=$(OPENSSL_PREFIX)/libcrypto.a
 
 $(BLS256_LIB): $(OBJ_DIR)/bls_c256.o
 	$(AR) $@ $<
