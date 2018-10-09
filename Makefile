@@ -32,7 +32,10 @@ MCL_LIB=../mcl/lib/libmcl.a
 $(MCL_LIB):
 	$(MAKE) -C ../mcl lib/libmcl.a
 
-ifeq ($(OS),mac)
+ifeq ($(DOCKER),alpine)
+GMP_PREFIX=/usr/lib
+OPENSSL_PREFIX=/usr/lib
+else ifeq ($(OS),mac)
 GMP_PREFIX=$(shell brew --prefix gmp)/lib
 OPENSSL_PREFIX=$(shell brew --prefix openssl)/lib
 else
