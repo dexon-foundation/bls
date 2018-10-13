@@ -9,4 +9,4 @@ RUN mkdir work ; cd work
 RUN git clone git://github.com/herumi/mcl.git
 RUN mkdir bls
 COPY . bls/
-RUN cd bls ; make test_go DOCKER=alpine -j && cp lib/* /usr/lib/
+RUN cd bls ; make clean && make test_go DOCKER=alpine -j && cp lib/* /usr/lib/
