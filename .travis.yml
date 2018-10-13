@@ -1,5 +1,7 @@
 sudo: false
 dist: trusty
+services:
+  - docker
 language: cpp
 compiler:
   - gcc
@@ -15,3 +17,4 @@ script:
   - make test DISABLE_THREAD_TEST=1
   - make test_go
   - bin/bls_c384_test.exe
+  - docker build --tag bls-go-alpine . -f images/bls-go-alpine/Dockerfile
