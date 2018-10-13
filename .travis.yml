@@ -24,7 +24,7 @@ script:
   - bin/bls_c384_test.exe
   - docker build --tag "$IMAGE_TAG" . -f images/bls-go-alpine/Dockerfile --no-cache
 before_deploy:
-  - docker login -u "$DOCKER_USER" -p "$DOCKER_PASS"
+  - echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
   - git_commit="$(git rev-parse --short HEAD)"
   - docker tag "$IMAGE_TAG" "${IMAGE_TAG}:${git_commit}"
   - docker tag "$IMAGE_TAG" "${IMAGE_TAG}:latest"
