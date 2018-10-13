@@ -33,3 +33,4 @@ deploy:
   script: docker push "${IMAGE_TAG}:latest" && docker push "${IMAGE_TAG}:${git_commit}"
   on:
     branch: dev
+    condition: "$CC = gcc"
