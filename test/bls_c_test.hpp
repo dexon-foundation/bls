@@ -2,6 +2,7 @@
 #include <cybozu/inttype.hpp>
 #include <bls/bls.h>
 #include <string.h>
+#include <cybozu/benchmark.hpp>
 
 void bls_use_stackTest()
 {
@@ -98,7 +99,7 @@ CYBOZU_TEST_AUTO(multipleInit)
 	{
 		std::vector<Thread> vt(n);
 		for (size_t i = 0; i < n; i++) {
-			vt[i].run(blsInit, MCL_BN254, MCLBN_FP_UNIT_SIZE);
+			vt[i].run(blsInit, MCL_BN254, MCLBN_COMPILED_TIME_VAR);
 		}
 	}
 	CYBOZU_TEST_EQUAL(blsGetOpUnitSize(), 4u);
@@ -106,7 +107,7 @@ CYBOZU_TEST_AUTO(multipleInit)
 	{
 		std::vector<Thread> vt(n);
 		for (size_t i = 0; i < n; i++) {
-			vt[i].run(blsInit, MCL_BLS12_381, MCLBN_FP_UNIT_SIZE);
+			vt[i].run(blsInit, MCL_BLS12_381, MCLBN_COMPILED_TIME_VAR);
 		}
 	}
 	CYBOZU_TEST_EQUAL(blsGetOpUnitSize(), 6u);
@@ -288,6 +289,22 @@ void blsAddSubTest()
 	CYBOZU_TEST_ASSERT(blsSignatureIsEqual(&sig[2], &sig[0]));
 }
 
+void blsBench()
+{
+	blsSecretKey sec;
+	blsPublicKey pub;
+	blsSignature sig;
+	const char *msg = "this is a pen";
+	const size_t msgSize = strlen(msg);
+
+	blsSecretKeySetByCSPRNG(&sec);
+
+	blsGetPublicKey(&pub, &sec);
+
+	CYBOZU_BENCH_C("sign", 1000, blsSign, &sig, &sec, msg, msgSize);
+	CYBOZU_BENCH_C("verify", 1000, blsVerify, &sig, &pub, msg, msgSize);
+}
+
 CYBOZU_TEST_AUTO(all)
 {
 	const int tbl[] = {
@@ -309,12 +326,13 @@ CYBOZU_TEST_AUTO(all)
 	};
 	for (size_t i = 0; i < sizeof(tbl) / sizeof(tbl[0]); i++) {
 		printf("i=%d\n", (int)i);
-		blsInit(tbl[i], MCLBN_FP_UNIT_SIZE);
+		blsInit(tbl[i], MCLBN_COMPILED_TIME_VAR);
 		bls_use_stackTest();
 		blsDataTest();
 		blsOrderTest(curveOrderTbl[i], fieldOrderTbl[i]);
 		blsSerializeTest();
 		if (tbl[i] == MCL_BLS12_381) blsVerifyOrderTest();
 		blsAddSubTest();
+		blsBench();
 	}
 }
