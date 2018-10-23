@@ -1,33 +1,33 @@
 sudo: false
 dist: trusty
 services:
-  - docker
+- docker
 env:
   global:
   - IMAGE_TAG=spiderpowa/bls-go-alpine
   - DOCKER_USER=spiderpowadeploy
-  - secure: f1n0SOiE3vlX7wVfaU+WbJVL2q70UJfqxOuh5Dz1ZDCasMkuWdLczPTnM8CqSo2CH+2th/skO+KZO/oZ+fkqGwK1xyXiOaGTZLppVyyNIW1M7YrRaHluU1RnrYhGLDs0Gv3n/4bllekVkyAtinDWTp6uB2Coyr7fL1Hz5RUGF5m7HhTsbVgotAPjo8NrGtLGNuIolaUNTaUVKbShPjknhHm8liZAZT6vidIZfm9Ij17RawD6F/0kfse7t/IsETh+FjPe1xqXwBVjbd/dolEzvTluixmB0nJPUGLT8vnbWTE6OpPSR19ap/ZxhmE1xcjZKou9imYM9efh1I485XH7vp0J3D2/IotE4RgNvjkr10jOT3RhVR5XvnhXxpin+3R4M0v8EhhboG9ThcjNQtVnSHrMtrjFR6LOMgg+Zz0hKwoLhcOOYBJxTrUR7YT8V51ruPRAlKMZPTYHyIiMjtpNbkenSoBYLK6ng60UJM0N3QYCmx/fmRSFa4Fpol7vy97WIFz0fH9Ew6sZe4ifveQGdLcdACYNTL5XCnrJzMABNOWyS35lg1FIdvXKJjalHYn8oYa0+5QfFD1iI9GrY+Bi8JXMwVbu6ElwUDm5n6kVoNKOiRMjGS7omDS7AGHNjVJ0gOL2dtKIc11fs2/iCBpYci3Fs+UW79hmz+n6D2fwaVA=
+  - secure: T4mkZzGofMqia/izUZAh1sPg8AD1ET7JWNagfRNZSClxkjjcgQp//LTZTuRVaaMhz5Bm3QwOLQ6IvtwUiS5fyaT49qLHXhx6PAY+w36g9lYJQkk02Kyy5sgyb9Kl1QzcoDmMOXKtQ1GiGa/BiOBcjhlWiuHi7l423RgVVu9fyhLKZBwGmyKnoTWVqZsx9XZVIizgZ1zXnIWJjTDkqZxDq0iXR++ZHmA+yhjn7qU8TNY6WGoewBvCpyIcW4Bkkinm4U7/pJN6w0QQcA3AQXbbymPmtH+CQeUqbK4WKpE1/0ugzAi68bijf7y9+W3eDwELwufYzbS2GPhvqe9J8kxeoNj5ej7St+Av08qJbKDyKCzF0pB2qpGgZl+MKFLYxmGmgHLlZZ8AO5aYkX/d4XJtS8ncnkvnTg0/D9FbVM9sWTdehI1xh65QXijFL5NC1IDsJDHfGsc/5KIEqwByRddBFwgqvbuLX9uZMnhFbMsOJSVBaRigsNvccY4CU8SD58kn6NJMFkTMQFxH93Qq89aEal7fWlCio0VGtRK7qK6izlTj95ryPC8tdNJIcgXB026hoVx9Zcjo5j26fXZR9hn3RqMY0AZwMKhvA8bLixrjtLDjrg3VphKmCrMaXH1q13EyoGSHCLwSklizfSqbYyqS+9t0PFpDQ3dZ4iIvsAbi3EA=
 language: cpp
 compiler:
-  - gcc
-  - clang
+- gcc
+- clang
 addons:
   apt:
     packages:
-      - libgmp-dev
+    - libgmp-dev
 install:
-  - git clone --depth 1 https://github.com/herumi/mcl.git $TRAVIS_BUILD_DIR/../mcl
+- git clone --depth 1 https://github.com/herumi/mcl.git $TRAVIS_BUILD_DIR/../mcl
 script:
-  - make -j3
-  - make test DISABLE_THREAD_TEST=1
-  - make test_go
-  - bin/bls_c384_test.exe
-  - docker build --tag "$IMAGE_TAG" . -f images/bls-go-alpine/Dockerfile --no-cache
+- make -j3
+- make test DISABLE_THREAD_TEST=1
+- make test_go
+- bin/bls_c384_test.exe
+- docker build --tag "$IMAGE_TAG" . -f images/bls-go-alpine/Dockerfile --no-cache
 before_deploy:
-  - echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
-  - git_commit="$(git rev-parse --short HEAD)"
-  - docker tag "$IMAGE_TAG" "${IMAGE_TAG}:${git_commit}"
-  - docker tag "$IMAGE_TAG" "${IMAGE_TAG}:latest"
+- echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+- git_commit="$(git rev-parse --short HEAD)"
+- docker tag "$IMAGE_TAG" "${IMAGE_TAG}:${git_commit}"
+- docker tag "$IMAGE_TAG" "${IMAGE_TAG}:latest"
 deploy:
   provider: script
   script: docker push "${IMAGE_TAG}:latest" && docker push "${IMAGE_TAG}:${git_commit}"
