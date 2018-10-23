@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/Spiderpowa/bls.png)](https://travis-ci.com/Spiderpowa/bls)
+[![Build Status](https://travis-ci.com/Spiderpowa/bls.png?branch=dev)](https://travis-ci.com/Spiderpowa/bls)
 
 # BLS threshold signature
 
