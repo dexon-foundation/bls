@@ -59,6 +59,7 @@ $(BLS384_LIB): $(OBJ_DIR)/bls_c384.o $(MCL_LIB)
 		ar x $(GMP_STATIC_LIB) && \
 		ar x $(GMPXX_STATIC_LIB)
 	$(AR) $@ $< tmp/*.o
+	rm -rf tmp
 
 ifneq ($(findstring $(OS),mac/mingw64),)
   BLS256_SLIB_LDFLAGS+=-lgmpxx -lgmp -lcrypto -lstdc++
