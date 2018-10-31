@@ -4,9 +4,9 @@ services:
 - docker
 env:
   global:
-  - IMAGE_TAG=spiderpowa/bls-go-alpine
+  - IMAGE_TAG=dexonfoundation/bls-go-alpine
   - DOCKER_USER=spiderpowadeploy
-  - secure: T4mkZzGofMqia/izUZAh1sPg8AD1ET7JWNagfRNZSClxkjjcgQp//LTZTuRVaaMhz5Bm3QwOLQ6IvtwUiS5fyaT49qLHXhx6PAY+w36g9lYJQkk02Kyy5sgyb9Kl1QzcoDmMOXKtQ1GiGa/BiOBcjhlWiuHi7l423RgVVu9fyhLKZBwGmyKnoTWVqZsx9XZVIizgZ1zXnIWJjTDkqZxDq0iXR++ZHmA+yhjn7qU8TNY6WGoewBvCpyIcW4Bkkinm4U7/pJN6w0QQcA3AQXbbymPmtH+CQeUqbK4WKpE1/0ugzAi68bijf7y9+W3eDwELwufYzbS2GPhvqe9J8kxeoNj5ej7St+Av08qJbKDyKCzF0pB2qpGgZl+MKFLYxmGmgHLlZZ8AO5aYkX/d4XJtS8ncnkvnTg0/D9FbVM9sWTdehI1xh65QXijFL5NC1IDsJDHfGsc/5KIEqwByRddBFwgqvbuLX9uZMnhFbMsOJSVBaRigsNvccY4CU8SD58kn6NJMFkTMQFxH93Qq89aEal7fWlCio0VGtRK7qK6izlTj95ryPC8tdNJIcgXB026hoVx9Zcjo5j26fXZR9hn3RqMY0AZwMKhvA8bLixrjtLDjrg3VphKmCrMaXH1q13EyoGSHCLwSklizfSqbYyqS+9t0PFpDQ3dZ4iIvsAbi3EA=
+  - secure: mqNCngWukyjE3UARxaPjqS0xgC1dsnWfmPhpH2mq7nR6S2cGfJ3xBfyiTS//Clz//7sAL+Tp62r3fxyMjDogrSHZUUssCAwf17RM6vnALqaVbc3wXcTNudiDB5cVKe9C9gZqn1Ivd+qbmtuCezSrOG5Xih1gh4bPTyiFvU1sp9C2icMHkJZkjsP0QqCbHlQrMeECSIPlEGIOXUUSp+WmrZAdi2rHezKeZxuaT73RX1+N/+1RfWXo2MR4ydQU3eALl5s5UA9JweQO+MYIVr8EEpGNqJRYUyURx/5G/Sy2v6Z3imUvXZv1J5aplW/UDls92Olla1JHuvFW6ptRO+PHITNwvEkhxPFj+HcOpqEuSISsdk9rkHUrM0wEYPv6A4vQPUjMHrLQs2tQShVCelM1HtNvDDjttKMmVyRLusFP9eS7uvmmXu2l6efJjsMSFkY5WKbu2U0MQ1j708KH9k2WunU6sjJ+b74PkkZVtkQMIqgTokC0IOqbbrnwh4I9PpVpHAQrewRimMH+lDHk+HlMUCWk7/IcIFUl+mh6RzW2vkZTTr2ctSBI6QzK5smdPmqQpp2lqkGv/hQCBp5ICzFSkU6Djqe3hG8ta3+/Zhi10fPU2HcHDi+gR79CG8dvy+iOeTS2csXZx+YoN2BVkfu9AnrjZ9Kjkf9BMay4CehBUWE=
 language: cpp
 compiler:
 - gcc
@@ -16,7 +16,7 @@ addons:
     packages:
     - libgmp-dev
 install:
-- git clone --depth 1 https://github.com/herumi/mcl.git $TRAVIS_BUILD_DIR/../mcl
+- git clone --depth 1 https://github.com/dexon-foundation/mcl.git $TRAVIS_BUILD_DIR/../mcl
 script:
 - make -j3
 - make test DISABLE_THREAD_TEST=1

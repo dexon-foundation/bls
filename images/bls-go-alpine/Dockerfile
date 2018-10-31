@@ -1,5 +1,5 @@
 FROM golang:alpine
-MAINTAINER Jimmy Hu <jim2212001@gmail.com>
+MAINTAINER Jimmy Hu <jimmy.hu@dexon.org>
 
 # Install dependencies
 RUN apk add --update-cache build-base gmp-dev openssl-dev git
