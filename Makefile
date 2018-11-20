@@ -32,21 +32,12 @@ MCL_LIB=../mcl/lib/libmcl.a
 $(MCL_LIB):
 	$(MAKE) -C ../mcl lib/libmcl.a
 
-ifeq ($(DOCKER),alpine)
-GMP_PREFIX?=/usr/lib
-OPENSSL_PREFIX?=/usr/lib
-else ifeq ($(OS),mac)
-GMP_PREFIX?=$(shell brew --prefix gmp)/lib
-OPENSSL_PREFIX?=$(shell brew --prefix openssl)/lib
-else
-GMP_PREFIX?=/usr/lib/x86_64-linux-gnu
-OPENSSL_PREFIX?=/usr/lib/x86_64-linux-gnu
-endif
+GMP_PREFIX=$(shell brew --prefix gmp)
+GMP_STATIC_LIB=$(GMP_PREFIX)/lib/libgmp.a
+GMPXX_STATIC_LIB=$(GMP_PREFIX)/lib/libgmpxx.a
 
-GMP_STATIC_LIB=$(GMP_PREFIX)/libgmp.a
-GMPXX_STATIC_LIB=$(GMP_PREFIX)/libgmpxx.a
-
-OPENSSL_STATIC_LIB=$(OPENSSL_PREFIX)/libcrypto.a
+OPENSSL_PREFIX=$(shell brew --prefix openssl)
+OPENSSL_STATIC_LIB="$(OPENSSL_PREFIX)/lib/libcrypto.a"
 
 $(BLS256_LIB): $(OBJ_DIR)/bls_c256.o
 	$(AR) $@ $<
@@ -59,7 +50,6 @@ $(BLS384_LIB): $(OBJ_DIR)/bls_c384.o $(MCL_LIB)
 		ar x $(GMP_STATIC_LIB) && \
 		ar x $(GMPXX_STATIC_LIB)
 	$(AR) $@ $< tmp/*.o
-	rm -rf tmp
 
 ifneq ($(findstring $(OS),mac/mingw64),)
   BLS256_SLIB_LDFLAGS+=-lgmpxx -lgmp -lcrypto -lstdc++
