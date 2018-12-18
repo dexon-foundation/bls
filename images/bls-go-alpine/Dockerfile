@@ -6,7 +6,7 @@ RUN apk add --update-cache build-base gmp-dev openssl-dev git
 
 # Build bls library
 RUN mkdir work ; cd work
-RUN git clone git://github.com/herumi/mcl.git
+RUN git clone git://github.com/dexon-foundation/mcl.git
 RUN mkdir bls
 COPY . bls/
 RUN cd bls ; make clean && make test_go DOCKER=alpine -j && cp lib/* /usr/lib/
