@@ -2,7 +2,7 @@ package bls
 
 /*
 #cgo CFLAGS:-I../../../include -I../../../../mcl/include/
-#cgo LDFLAGS:${SRCDIR}/../../../lib/libbls384.a ${SRCDIR}/../../../../mcl/lib/libmcl.a -lgmpxx -lgmp
+#cgo LDFLAGS:${SRCDIR}/../../../lib/libbls384.a ${SRCDIR}/../../../../mcl/lib/libmcl.a -lgmpxx -lgmp -lstdc++
 #cgo CFLAGS:-DMCLBN_FP_UNIT_SIZE=6
 #cgo pkg-config: libcrypto
 #cgo static pkg-config: --static
