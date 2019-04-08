@@ -2,14 +2,15 @@ package bls
 
 /*
 #cgo bn256 CFLAGS:-DMCLBN_FP_UNIT_SIZE=4
-#cgo bn256 LDFLAGS:-lbls256
+#cgo bn256 LDFLAGS:${SRCDIR}/../../../lib/libbls256.a
 #cgo bn384 CFLAGS:-DMCLBN_FP_UNIT_SIZE=6
-#cgo bn384 LDFLAGS:-lbls384
+#cgo bn384 LDFLAGS:${SRCDIR}/../../../lib/libbls384.a
 #cgo bn384_256 CFLAGS:-DMCLBN_FP_UNIT_SIZE=6 -DMCLBN_FR_UNIT_SIZE=4
-#cgo bn384_256 LDFLAGS:-lbls384_256
-#cgo LDFLAGS:-lbls384
-#cgo LDFLAGS:-lcrypto -lgmp -lgmpxx -lstdc++
-#include "config.h"
+#cgo bn384_256 LDFLAGS:${SRCDIR}/../../../lib/libbls384_256.a
+#cgo !bn256,!bn384,!bn384_256 CFLAGS:-DMCLBN_FP_UNIT_SIZE=6
+#cgo !bn256,!bn384,!bn384_256 LDFLAGS:${SRCDIR}/../../../lib/libbls384.a
+#cgo LDFLAGS:${SRCDIR}/../../../../mcl/lib/libmcl.a -lgmpxx -lgmp
+#cgo pkg-config: libcrypto
 typedef unsigned int (*ReadRandFunc)(void *, void *, unsigned int);
 int wrapReadRandCgo(void *self, void *buf, unsigned int n);
 #include <bls/bls.h>
