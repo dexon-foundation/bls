@@ -54,6 +54,14 @@ func (id *ID) SetLittleEndian(buf []byte) error {
 	return id.v.SetLittleEndian(buf)
 }
 
+func (id *ID) SerializeBig() []byte {
+	return id.v.SerializeBig()
+}
+
+func (id *ID) DeserializeBig(buf []byte) error {
+	return id.v.DeserializeBig(buf)
+}
+
 // GetHexString --
 func (id *ID) GetHexString() string {
 	return id.v.GetString(16)
@@ -124,6 +132,14 @@ func (sec *SecretKey) GetLittleEndian() []byte {
 // SetLittleEndian --
 func (sec *SecretKey) SetLittleEndian(buf []byte) error {
 	return sec.v.SetLittleEndian(buf)
+}
+
+func (sec *SecretKey) SerializeBig() []byte {
+	return sec.v.SerializeBig()
+}
+
+func (sec *SecretKey) DeserializeBig(buf []byte) error {
+	return sec.v.DeserializeBig(buf)
 }
 
 // SerializeToHexStr --
@@ -257,6 +273,14 @@ func (pub *PublicKey) Deserialize(buf []byte) error {
 	return pub.v.Deserialize(buf)
 }
 
+func (pub *PublicKey) SerializeBig() []byte {
+	return pub.v.SerializeBig()
+}
+
+func (pub *PublicKey) DeserializeBig(buf []byte) error {
+	return pub.v.DeserializeBig(buf)
+}
+
 // SerializeToHexStr --
 func (pub *PublicKey) SerializeToHexStr() string {
 	return pub.v.GetString(IoSerializeHexStr)
@@ -344,6 +368,14 @@ func (sign *Sign) Serialize() []byte {
 // Deserialize --
 func (sign *Sign) Deserialize(buf []byte) error {
 	return sign.v.Deserialize(buf)
+}
+
+func (sign *Sign) SerializeBig() []byte {
+	return sign.v.SerializeBig()
+}
+
+func (sign *Sign) DeserializeBig(buf []byte) error {
+	return sign.v.DeserializeBig(buf)
 }
 
 // SerializeToHexStr --

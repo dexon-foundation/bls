@@ -72,6 +72,14 @@ func GetFieldOrder() string {
 	return string(buf[:n])
 }
 
+func reverse(b []byte) []byte {
+	l := make([]byte, len(b))
+	for i := 0; i < len(b); i++ {
+		l[i] = b[len(b)-i-1]
+	}
+	return l
+}
+
 // Fr --
 type Fr struct {
 	v C.mclBnFr
@@ -175,6 +183,16 @@ func (x *Fr) Serialize() []byte {
 		panic("err mclBnFr_serialize")
 	}
 	return buf[:n]
+}
+
+// SerializeBig serialize Fr to big endian
+func (x *Fr) SerializeBig() []byte {
+	return reverse(x.Serialize())
+}
+
+// DeserializeBig deserialize Fr from big endian
+func (x *Fr) DeserializeBig(buf []byte) error {
+	return x.Deserialize(reverse(buf))
 }
 
 // FrNeg --
@@ -287,6 +305,16 @@ func (x *G1) Serialize() []byte {
 	return buf[:n]
 }
 
+// SerializeBig serialize G1 to big endian
+func (x *G1) SerializeBig() []byte {
+	return reverse(x.Serialize())
+}
+
+// DeserializeBig deserialize G1 from big endian
+func (x *G1) DeserializeBig(buf []byte) error {
+	return x.Deserialize(reverse(buf))
+}
+
 // G1Neg --
 func G1Neg(out *G1, x *G1) {
 	C.mclBnG1_neg(out.getPointer(), x.getPointer())
@@ -395,6 +423,16 @@ func (x *G2) Serialize() []byte {
 		panic("err mclBnG2_serialize")
 	}
 	return buf[:n]
+}
+
+// SerializeBig serialize G2 to big endian
+func (x *G2) SerializeBig() []byte {
+	return reverse(x.Serialize())
+}
+
+// DeserializeBig deserialize G2 from big endian
+func (x *G2) DeserializeBig(buf []byte) error {
+	return x.Deserialize(reverse(buf))
 }
 
 // G2Neg --
